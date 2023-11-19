@@ -20,7 +20,7 @@ function toggle_light_mode(event) {
         }
     }
 
-}
+};
 
 document.querySelector('.add_book_button').addEventListener("click", add_book);
 
@@ -38,12 +38,37 @@ function add_book() {
         document.querySelector('.book_author_title_input').value = "";
         document.querySelector('.book_pages_title_input').value = "";
     };
-}
+};
 
 function append_Element(name, author, pages) {
     const element = create_book_element(name, author, pages);
     document.querySelector('.book_container').appendChild(element);
-}
+    update_total_books();
+};
+
+function update_total_books() {
+    const read_check_input = document.querySelectorAll('.read_check');
+    let number_of_books = read_check_input.length;
+    console.log(number_of_books)
+    console.log(document.querySelector('.book_count').textContent);
+    document.querySelector('.book_count').textContent = number_of_books;
+    update_not_read_books();
+};
+
+function update_not_read_books() {
+    const read_check_input = document.querySelectorAll('.read_check');
+    let not_read = 0;
+
+    read_check_input.forEach(function (element) {
+        if (!element.checked) {
+            not_read++;
+        };
+    });
+
+    document.querySelector('.not_read_count').textContent = not_read;
+
+
+};
 
 document.querySelector('.book_container').addEventListener("click", function(event) {
     calculate_read(event);
@@ -58,18 +83,31 @@ function calculate_read(event) {
     }else {
         parse_read = document.querySelector('.read_number_books').textContent;
         read = (parseInt(parse_read, 10));
-    }
+    };
 
     if (event.target.classList.contains('read_check')) {
         let input = event.target;
         if (input.checked) {
             read++;
             document.querySelector('.read_number_books').textContent = read;
+            /* decrease not read books */
+            let not_read = document.querySelector('.not_read_count').textContent;
+            let not_read_to_number = string_to_number(not_read);
+                    console.log(not_read_to_number);
+                not_read_to_number--;
+            document.querySelector('.not_read_count').textContent = not_read_to_number;
+            
         }else if (!input.checked) {
-            read--;
-            document.querySelector('.read_number_books').textContent = read;
-        }
-    }
+            console.log("else if");
+            let read_book_count = string_to_number(document.querySelector('.read_number_books').textContent);
+            let unread_book_count = string_to_number(document.querySelector('.not_read_count').textContent);
+                read_book_count--;
+                    document.querySelector('.read_number_books').textContent = read_book_count;
+                unread_book_count++;
+                    document.querySelector('.not_read_count').textContent = unread_book_count;
+
+        };
+    };
     
     let read_book_tally = document.querySelector('.read_number_books');
         read_book_tally = read;
@@ -123,4 +161,8 @@ function create_book_element(name, author, pages) {
     book_element.appendChild(book_read_check_box_container);
 
     return book_element;
+}
+
+function string_to_number(string){
+    return (parseInt(string, 10));
 }
