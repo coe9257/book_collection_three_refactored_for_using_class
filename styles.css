@@ -250,12 +250,14 @@ h1 {
     .top_div_container {
         flex-direction: column;
         padding: 0;
-        background-color: whitesmoke;
+        background-color: darkslategray;
+        color: rgb(243, 243, 243);
     }
 
     .top_div_container_light_mode {
         flex-direction: column;
         padding: 0;
+        background-color: silver;
     }
 
     .title_div {
